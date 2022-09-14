@@ -51,6 +51,7 @@ public class SandboxPlayerMovement : MonoBehaviour, IDataPersistence
         {
             dataStorage.initializeAbraumMatrix();
         }
+
         sandboxTileManagementScript.initSandboxTileIsShown(); //Abraum Feature  
 
         expCounter =
@@ -325,6 +326,11 @@ public class SandboxPlayerMovement : MonoBehaviour, IDataPersistence
         dataStorage.expMultiplikator = data.expMultiplikator;
         dataStorage.manpower = data.manpower;
         this.abraumMatrixInitialized = data.abraumMatrixObjectsInitialized;
+
+        if (dataStorage.abraumMatrix == null)
+        {
+            dataStorage.initializeAbraumMatrix();
+        }
         if (data.abraumMatrixObjectsInitialized)
         {
             LoadAbraumMatrix(data);
