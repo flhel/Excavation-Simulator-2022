@@ -24,14 +24,16 @@ public class DiggingToolBehaviour : MonoBehaviour
 
     CursorBehaviour cursorBehaviour;
 
-    AudioSource audioSource;
+    AudioSource audioSourceDigging;
+    AudioSource audioSourceBreaking;
 
     void Awake()
     {
         cursorBehaviour = GameObject.Find("CursorBehaviourSkript").GetComponent<CursorBehaviour>();
         layers = GameObject.FindGameObjectsWithTag("GroundLayer");
         artifacts = GameObject.FindGameObjectsWithTag("Artifact");
-        audioSource = GameObject.Find("AudioDigging").GetComponent<AudioSource>();
+        audioSourceDigging = GameObject.Find("AudioDigging").GetComponent<AudioSource>();
+        audioSourceBreaking = GameObject.Find("AudioBreaking").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -165,7 +167,7 @@ public class DiggingToolBehaviour : MonoBehaviour
                 groundLayerTilemap.WorldToCell(mousePosition);
             if (groundLayerTilemap.HasTile(gridPosition) && !cursorBehaviour.MouseHoversToolbox)
             {
-                audioSource.Play();
+                audioSourceDigging.Play();
                 deleteTilesAtPosition(gridPosition, groundLayerTilemap, groundLayerRenderer.sortingOrder);
                 depleteManpower();
                 i = layers.Length + 1;
@@ -231,6 +233,7 @@ public class DiggingToolBehaviour : MonoBehaviour
             if (artifactTilemapRenderer.sortingOrder == (sortingOrderGround + 1)
                 && artifactTilemap.HasTile(gridPosition))
             {
+                audioSourceBreaking.Play();
                 artifacts[i].transform.position = new Vector3(-10, -10, 0); // hide Artifact "destroyed"
             }
         }
