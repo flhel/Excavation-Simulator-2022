@@ -29,11 +29,14 @@ public class ArtifactToolBehaviour : MonoBehaviour
 
     private int clickCounter;
 
+    AudioSource audioSource;
+
     void Awake()
     {
         groundLayers = GameObject.FindGameObjectsWithTag("GroundLayer");
         dustLayers = GameObject.FindGameObjectsWithTag("DustLayer");
         dataStorage = GameObject.Find("DataStorageObject").GetComponent<DataStorageClass>();
+        audioSource = GameObject.Find("AudioBrush").GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -164,6 +167,7 @@ public class ArtifactToolBehaviour : MonoBehaviour
 
                 if (groundLayer.HasTile(gridPosition))
                 {
+                    audioSource.Play();
                     deleteTilesAtPosition(gridPosition, groundLayer);
                     i = groundLayers.Length + 1;
                     return true;
@@ -188,11 +192,9 @@ public class ArtifactToolBehaviour : MonoBehaviour
 
                 Vector3Int gridPosition = dustLayer.WorldToCell(mousePosition);
 
-                if (
-                    dustLayer.HasTile(gridPosition) &&
-                    !groundLayer.HasTile(gridPosition)
-                )
+                if (dustLayer.HasTile(gridPosition) && !groundLayer.HasTile(gridPosition))
                 {
+                    audioSource.Play();
                     deleteTilesAtPosition(gridPosition, dustLayer);
                     i = dustLayers.Length + 1;
                     return true;

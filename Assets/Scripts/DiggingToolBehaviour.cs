@@ -24,11 +24,16 @@ public class DiggingToolBehaviour : MonoBehaviour
 
     CursorBehaviour cursorBehaviour;
 
+    AudioSource audioSourceDigging;
+    AudioSource audioSourceBreaking;
+
     void Awake()
     {
         cursorBehaviour = GameObject.Find("CursorBehaviourSkript").GetComponent<CursorBehaviour>();
         layers = GameObject.FindGameObjectsWithTag("GroundLayer");
         artifacts = GameObject.FindGameObjectsWithTag("Artifact");
+        audioSourceDigging = GameObject.Find("AudioDigging").GetComponent<AudioSource>();
+        audioSourceBreaking = GameObject.Find("AudioBreaking").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -111,15 +116,35 @@ public class DiggingToolBehaviour : MonoBehaviour
         for (int i = 0; i < artifacts.Length; i++)
         {
             // Sortiert nach Name, größere Zahl = tiefer
-            Tilemap artifact = artifacts[i].GetComponent<Tilemap>();
+            Tilemap artifactTilemap = artifacts[i].GetComponent<Tilemap>();
+            TilemapRenderer artifactTilemapRenderer = artifactTilemap.GetComponent<TilemapRenderer>();
 
-            Vector3Int gridPosition = artifact.WorldToCell(mousePosition);
+            //Check if Ground is over Artifact
+            bool isGround = false;
+
+            for (int j = 0; j < layers.Length; j++)
+            {
+                GameObject groundLayer = GameObject.Find("Ground (" + j + ")");
+                Tilemap groundLayerTilemap = groundLayer.GetComponent<Tilemap>();
+                TilemapRenderer groundLayerRenderer = groundLayer.GetComponent<TilemapRenderer>();
+                Vector3Int gridPositionGround = groundLayerTilemap.WorldToCell(mousePosition);
+
+                if (groundLayerTilemap.HasTile(gridPositionGround))
+                {
+                    if (groundLayerRenderer.sortingOrder > artifactTilemapRenderer.sortingOrder)
+                    {
+                        isGround = true;
+                    }
+                }
+            }
 
             //Check if Artifact Tile was klicked
-            if (artifact.HasTile(gridPosition))
+            Vector3Int gridPositionArtifact = artifactTilemap.WorldToCell(mousePosition);
+
+            if (artifactTilemap.HasTile(gridPositionArtifact) && !isGround)
             {
                 //Artefakt bei Seite legen
-                artifact.transform.position = new Vector3(-10, -10, 0);
+                artifactTilemap.transform.position = new Vector3(-10, -10, 0);
                 //Alle GameObjecte deaktivieren
                 deactivateAllObjectsInScene();
                 dataStorageObject.SetActive(true);
@@ -162,6 +187,7 @@ public class DiggingToolBehaviour : MonoBehaviour
                 groundLayerTilemap.WorldToCell(mousePosition);
             if (groundLayerTilemap.HasTile(gridPosition) && !cursorBehaviour.MouseHoversToolbox)
             {
+                audioSourceDigging.Play();
                 deleteTilesAtPosition(gridPosition, groundLayerTilemap, groundLayerRenderer.sortingOrder);
                 depleteManpower();
                 i = layers.Length + 1;
@@ -227,6 +253,7 @@ public class DiggingToolBehaviour : MonoBehaviour
             if (artifactTilemapRenderer.sortingOrder == (sortingOrderGround + 1)
                 && artifactTilemap.HasTile(gridPosition))
             {
+                audioSourceBreaking.Play();
                 artifacts[i].transform.position = new Vector3(-10, -10, 0); // hide Artifact "destroyed"
             }
         }
