@@ -11691,11 +11691,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Tip:
 
-    The Dustpan removes gross dirt while the brush removes fine
+    The dustpan removes gross dirt while the brush removes fine
     dirt.
 
 
-    You can exit the scene when the Artifact got clened sufficiently.'
+    You can exit the scene when the artifact got clened sufficiently.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
