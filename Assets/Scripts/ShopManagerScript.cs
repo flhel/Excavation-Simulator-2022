@@ -84,6 +84,15 @@ public class ShopManagerScript : MonoBehaviour, IDataPersistence
         {
             equipment = -6;
         }
+
+        if (shopItems[3, 4] < shopItems[3, 3])
+        {
+            noTools = 0.7;
+        }
+        else
+        {
+            noTools = 1;
+        }
     }
 
     public void Buy()
@@ -105,15 +114,6 @@ public class ShopManagerScript : MonoBehaviour, IDataPersistence
         if (abraumMatrixObjectsInitialized)
         {
             abraumMatrixObjectsInitialized = false;
-        }
-
-        if (shopItems[3, 4] < shopItems[3, 3])
-        {
-            noTools = 0.7;
-        }
-        else
-        {
-            noTools = 1;
         }
 
         manpowercast = (((shopItems[3, 3] * 12) + shopItems[3, 1]) * noTools) + equipment;
