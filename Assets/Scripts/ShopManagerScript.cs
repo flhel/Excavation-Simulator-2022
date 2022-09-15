@@ -116,9 +116,8 @@ public class ShopManagerScript : MonoBehaviour, IDataPersistence
             noTools = 1;
         }
 
-        manpowercast = (((shopItems[3, 3] * 10) + shopItems[3, 1]) * noTools) + equipment;
+        manpowercast = (((shopItems[3, 3] * 12) + shopItems[3, 1]) * noTools) + equipment;
         manpower = (int)manpowercast;
-        manpower = manpower * 3;
         expMultiplikator = (shopItems[3, 1] + (shopItems[3, 2] * 12)) + extraMulti;
 
         DataPersistenceManager.instance.SaveGame();

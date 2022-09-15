@@ -159,7 +159,7 @@ public class ApplicationMenu : MonoBehaviour, IDataPersistence
 
 
         moneyMultiplikator = multi_1 + multi_2 + multi_3 + multi_4;
-        money = (int)moneyMultiplikator * 50000;
+        money = (int)moneyMultiplikator * 60000;
         DataPersistenceManager.instance.SaveGame();
     }
 }
